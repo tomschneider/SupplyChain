@@ -15,6 +15,11 @@ library Roles {
    */
   function add(Role storage role, address account) internal {
     require(account != address(0));
+
+    // TRW: I think this next is checking if account already is defined here
+    // if already, then it does not add it a second time
+    // although writing/over-writing account address to Role
+    // should be idempotent
     require(!has(role, account));
 
     role.bearer[account] = true;
