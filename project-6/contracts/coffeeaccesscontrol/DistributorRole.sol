@@ -1,4 +1,5 @@
-pragma solidity ^0.4.24;
+// SPDX-License-Identifier: MIT
+pragma solidity >=0.4.22 <0.9.0;
 
 // Import the library 'Roles'
 import "./Roles.sol";
@@ -11,7 +12,7 @@ contract DistributorRole {
   // Define a struct 'distributors' by inheriting from 'Roles' library, struct Role
 
   // In the constructor make the address that deploys this contract the 1st distributor
-  constructor() public {
+  constructor() {
 
   }
 
@@ -23,7 +24,8 @@ contract DistributorRole {
 
   // Define a function 'isDistributor' to check this role
   function isDistributor(address account) public view returns (bool) {
-
+    // TRW: Fix this to do the real logic
+    return true;
   }
 
   // Define a function 'addDistributor' that adds this role
