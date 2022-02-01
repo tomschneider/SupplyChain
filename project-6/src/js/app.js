@@ -127,10 +127,15 @@ App = {
     handleButtonClick: async function(event) {
         event.preventDefault();
 
+        var processId = parseInt($(event.target).data('id'));
+        console.log('processId', processId);
+        console.log('Event is '+ event);
+        console.log("Processing UPC       = " + App.upc.valueOf())
+
         App.getMetamaskAccountID();
 
-        var processId = parseInt($(event.target).data('id'));
-        console.log('processId',processId);
+        console.log("UPC       = " + App.upc.valueOf())
+//        console.log("FarmName = " + App.originFarmName.valueOf())
 
         switch(processId) {
             case 1:
@@ -170,28 +175,22 @@ App = {
         event.preventDefault();
         var processId = parseInt($(event.target).data('id'));
 
-//        App.contracts.SupplyChain.deployed().then(function(instance) {
+        var thisUPC = parseInt($(event.target).data('upc'));
 
-//            instance.isFarmer(
-//                App.metamaskAccountID,
-//                {from: App.metamaskAccountID}
-//            );
-//        }).then(function(result) {
-//            console.log('Account is Farmer',result);
-//        }).catch(function(err) {
-//            console.log(err.message);
-//        });
+        console.log("Harvesting UPC       = " + thisUPC)
+
         App.contracts.SupplyChain.deployed().then(function(instance) {
 
-
             return instance.harvestItem(
-                App.upc, 
-                App.metamaskAccountID, 
-                App.originFarmName, 
-                App.originFarmInformation, 
-                App.originFarmLatitude, 
-                App.originFarmLongitude, 
-                App.productNotes, {from: App.metamaskAccountID}
+                App.upc.valueOf(),
+                App.metamaskAccountID,
+                App.originFarmName.valueOf(),
+                App.originFarmInformation.valueOf(),
+                App.originFarmLatitude.valueOf(),
+                App.originFarmLongitude.valueOf(),
+                App.productNotes.valueOf(),
+                App.upc.valueOf(), // set ProductID = upc, to bypass sideeffect when more than one product
+                {from: App.metamaskAccountID}
             );
         }).then(function(result) {
             $("#ftc-item").text(result);
@@ -204,9 +203,12 @@ App = {
     processItem: function (event) {
         event.preventDefault();
         var processId = parseInt($(event.target).data('id'));
-
+        console.log("Processing UPC       = " + App.upc.valueOf())
         App.contracts.SupplyChain.deployed().then(function(instance) {
-            return instance.processItem(App.upc, {from: App.metamaskAccountID});
+            return instance.processItem(
+                App.upc.valueOf(),
+                {from: App.metamaskAccountID}
+            );
         }).then(function(result) {
             $("#ftc-item").text(result);
             console.log('processItem',result);
@@ -218,9 +220,12 @@ App = {
     packItem: function (event) {
         event.preventDefault();
         var processId = parseInt($(event.target).data('id'));
-
+        console.log("Packing UPC       = " + App.upc.valueOf())
         App.contracts.SupplyChain.deployed().then(function(instance) {
-            return instance.packItem(App.upc, {from: App.metamaskAccountID});
+            return instance.packItem(
+                App.upc.valueOf(),
+                {from: App.metamaskAccountID}
+            );
         }).then(function(result) {
             $("#ftc-item").text(result);
             console.log('packItem',result);
@@ -231,12 +236,22 @@ App = {
 
     sellItem: function (event) {
         event.preventDefault();
-        var processId = parseInt($(event.target).data('id'));
+//        var processId = parseInt($(event.target).data('id'));
+        console.log("Selling UPC       = " + App.upc.valueOf())
 
+        // Challenge found in sellItem()
+        // Please pass numbers as strings or BN objects to avoid precision errors.
+        // https://ethereum.stackexchange.com/questions/65477/react-please-pass-numbers-as-strings-or-bignumber-objects-to-avoid-precision-er
         App.contracts.SupplyChain.deployed().then(function(instance) {
-            const productPrice = web3.toWei(1, "ether");
-            console.log('productPrice',productPrice);
-            return instance.sellItem(App.upc, App.productPrice, {from: App.metamaskAccountID});
+            let productPrice = web3.utils.toWei('1', "ether");
+            console.log('productPrice', productPrice);
+            console.log("At Price          = " + productPrice)
+
+            return instance.sellItem(
+                App.upc.valueOf(),
+                productPrice,
+                {from: App.metamaskAccountID}
+            );
         }).then(function(result) {
             $("#ftc-item").text(result);
             console.log('sellItem',result);
@@ -248,10 +263,12 @@ App = {
     buyItem: function (event) {
         event.preventDefault();
         var processId = parseInt($(event.target).data('id'));
-
+        console.log("Buying UPC       = " + App.upc.valueOf())
         App.contracts.SupplyChain.deployed().then(function(instance) {
-            const walletValue = web3.toWei(3, "ether");
-            return instance.buyItem(App.upc, {from: App.metamaskAccountID, value: walletValue});
+            const walletValue = web3.utils.toWei('3', "ether");
+            return instance.buyItem(
+                App.upc.valueOf(),
+                {from: App.metamaskAccountID, value: walletValue});
         }).then(function(result) {
             $("#ftc-item").text(result);
             console.log('buyItem',result);
@@ -263,9 +280,12 @@ App = {
     shipItem: function (event) {
         event.preventDefault();
         var processId = parseInt($(event.target).data('id'));
-
+        console.log("Shipping UPC       = " + App.upc.valueOf())
         App.contracts.SupplyChain.deployed().then(function(instance) {
-            return instance.shipItem(App.upc, {from: App.metamaskAccountID});
+            return instance.shipItem(
+                App.upc.valueOf(),
+                {from: App.metamaskAccountID}
+            );
         }).then(function(result) {
             $("#ftc-item").text(result);
             console.log('shipItem',result);
@@ -278,8 +298,11 @@ App = {
         event.preventDefault();
         var processId = parseInt($(event.target).data('id'));
 
+        console.log("Receiving UPC       = " + App.upc.valueOf())
         App.contracts.SupplyChain.deployed().then(function(instance) {
-            return instance.receiveItem(App.upc, {from: App.metamaskAccountID});
+            return instance.receiveItem(
+                App.upc.valueOf(),
+                {from: App.metamaskAccountID});
         }).then(function(result) {
             $("#ftc-item").text(result);
             console.log('receiveItem',result);
@@ -292,8 +315,12 @@ App = {
         event.preventDefault();
         var processId = parseInt($(event.target).data('id'));
 
+        console.log("Purchasing UPC       = " + App.upc.valueOf())
         App.contracts.SupplyChain.deployed().then(function(instance) {
-            return instance.purchaseItem(App.upc, {from: App.metamaskAccountID});
+            return instance.purchaseItem(
+                App.upc.valueOf(),
+                {from: App.metamaskAccountID}
+            );
         }).then(function(result) {
             $("#ftc-item").text(result);
             console.log('purchaseItem',result);
@@ -305,11 +332,13 @@ App = {
     fetchItemBufferOne: function () {
     ///   event.preventDefault();
     ///    var processId = parseInt($(event.target).data('id'));
-        App.upc = $('#upc').val();
-        console.log('upc',App.upc);
+        //App.upc = $('#upc').val();
+        console.log("Fetching Buffer One for UPC       = " + App.upc.valueOf())
 
         App.contracts.SupplyChain.deployed().then(function(instance) {
-          return instance.fetchItemBufferOne(App.upc);
+          return instance.fetchItemBufferOne(
+              App.upc.valueOf()
+          );
         }).then(function(result) {
           $("#ftc-item").text(result);
           console.log('fetchItemBufferOne', result);
@@ -321,9 +350,13 @@ App = {
     fetchItemBufferTwo: function () {
     ///    event.preventDefault();
     ///    var processId = parseInt($(event.target).data('id'));
-                        
+        App.upc = $('#upc').val();
+        console.log("Fetching Buffer Two for UPC       = " + App.upc.valueOf())
+
         App.contracts.SupplyChain.deployed().then(function(instance) {
-          return instance.fetchItemBufferTwo.call(App.upc);
+          return instance.fetchItemBufferTwo.call(
+              App.upc.valueOf()
+          );
         }).then(function(result) {
           $("#ftc-item").text(result);
           console.log('fetchItemBufferTwo', result);

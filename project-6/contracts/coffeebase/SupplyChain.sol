@@ -21,8 +21,8 @@ contract SupplyChain is Ownable, FarmerRole, DistributorRole, RetailerRole, Cons
   event ItemPurchased(uint upc);
 
   // my own
-  event RefundSent(address purchaser);
-  event PaymentSent(address seller);
+  event TomW_ADDED_RefundSent(address purchaser);
+  event TomW_ADDED_PaymentSent(address seller);
 
   // Define a variable called 'upc' for Universal Product Code (UPC)
   uint  upc;
@@ -30,10 +30,12 @@ contract SupplyChain is Ownable, FarmerRole, DistributorRole, RetailerRole, Cons
   // Define a variable called 'sku' for Stock Keeping Unit (SKU)
   uint  sku;
 
+  // Define a public mapping 'items' that maps the UPC to an Item.
+  mapping (uint => Item) itemsByUPC;
 
-  // Define a public mapping 'itemsHistory' that maps the UPC to an array of TxHash, 
+  // Define a public mapping 'itemsHistory' that maps the UPC to an array of TxHash,
   // that track its journey through the supply chain -- to be sent from DApp.
-  mapping (uint => string[]) itemsHistoryByUPC;
+//  mapping (uint => string[]) itemsHistoryByUPC;
   
   // Define enum 'State' with the following values:
   enum State
@@ -83,7 +85,7 @@ contract SupplyChain is Ownable, FarmerRole, DistributorRole, RetailerRole, Cons
     uint amountToReturn = msg.value - _price;
     address consumer = msg.sender;
     payable(consumer).transfer(amountToReturn);
-    emit RefundSent(consumer);
+    emit TomW_ADDED_RefundSent(consumer);
   }
 
   // Define a modifier that checks if an item.state of a upc is Harvested
@@ -156,9 +158,11 @@ contract SupplyChain is Ownable, FarmerRole, DistributorRole, RetailerRole, Cons
     }
   }
 
-  // Define a public mapping 'items' that maps the UPC to an Item.
-  mapping (uint => Item) itemsByUPC;
 
+  function getUPCs() public view returns (string[] memory){
+
+
+  }
   // Define a function 'harvestItem' that allows a farmer to mark an item 'Harvested'
   function harvestItem(uint           _upc,
                         address       _originFarmerID,
@@ -166,13 +170,22 @@ contract SupplyChain is Ownable, FarmerRole, DistributorRole, RetailerRole, Cons
                         string memory _originFarmInformation,
                         string memory _originFarmLatitude,
                         string memory _originFarmLongitude,
-                        string memory _productNotes) public
+                        string memory _productNotes,
+                        uint _productID
+                        ) public
   {
     // Add the new item as part of Harvest
-    itemsByUPC[_upc].ownerID = _originFarmerID;
+    itemsByUPC[_upc].upc = _upc;
     itemsByUPC[_upc].sku = sku;
 
-    itemsByUPC[_upc].upc = _upc;
+    // having product ID = adding two numbers together is stupid
+    // I'm going to have it equal my Product ID
+    // because I don't want to
+    // waste more time with amateur hour side-effect assumptions
+    // by the original developer who tested on a short running system
+    itemsByUPC[_upc].productID = _productID;
+
+    itemsByUPC[_upc].ownerID = _originFarmerID;
     itemsByUPC[_upc].originFarmerID = _originFarmerID;
     itemsByUPC[_upc].originFarmName = _originFarmName;
     itemsByUPC[_upc].originFarmInformation = _originFarmInformation;
@@ -180,10 +193,10 @@ contract SupplyChain is Ownable, FarmerRole, DistributorRole, RetailerRole, Cons
     itemsByUPC[_upc].originFarmLongitude = _originFarmLongitude;
     itemsByUPC[_upc].productNotes = _productNotes;
     itemsByUPC[_upc].itemState = State.Harvested;
-    itemsByUPC[_upc].productID = sku + upc;
 
-    // Increment sku
+
     sku = sku + 1;
+
     // Emit the appropriate event
     emit ItemHarvested(itemsByUPC[_upc].upc);
   }
@@ -257,7 +270,7 @@ contract SupplyChain is Ownable, FarmerRole, DistributorRole, RetailerRole, Cons
       // emit the appropriate event
 
       emit ItemSold(_upc);
-      emit PaymentSent(farmersAddress);
+      emit TomW_ADDED_PaymentSent(farmersAddress);
   }
 
   // Define a function 'shipItem' that allows the distributor to mark an item 'Shipped'
