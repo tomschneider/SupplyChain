@@ -8,7 +8,7 @@ import "../coffeeaccesscontrol/RetailerRole.sol";
 import "../coffeecore/Ownable.sol";
 
 // Define a contract 'Supplychain'
-contract SupplyChain is Ownable, FarmerRole, DistributorRole, RetailerRole, ConsumerRole{
+contract SupplyChain is Ownable, FarmerRole, DistributorRole, RetailerRole, ConsumerRole {
 
   // Define 8 events with the same 8 state values and accept 'upc' as input argument
   event ItemHarvested(uint upc);
@@ -19,6 +19,8 @@ contract SupplyChain is Ownable, FarmerRole, DistributorRole, RetailerRole, Cons
   event ItemShipped(uint upc);
   event ItemReceived(uint upc);
   event ItemPurchased(uint upc);
+
+  // my own
   event RefundSent(address purchaser);
   event PaymentSent(address seller);
 
@@ -317,9 +319,7 @@ contract SupplyChain is Ownable, FarmerRole, DistributorRole, RetailerRole, Cons
     string  memory originFarmName,
     string  memory originFarmInformation,
     string  memory originFarmLatitude,
-    string  memory originFarmLongitude,
-    uint    productID
-  )
+    string  memory originFarmLongitude)
   {
     Item memory item = itemsByUPC[_upc];
     return (
@@ -330,8 +330,7 @@ contract SupplyChain is Ownable, FarmerRole, DistributorRole, RetailerRole, Cons
       item.originFarmName,
       item.originFarmInformation,
       item.originFarmLatitude,
-      item.originFarmLongitude,
-      item.productID
+      item.originFarmLongitude
     );
   }
 
@@ -341,6 +340,7 @@ contract SupplyChain is Ownable, FarmerRole, DistributorRole, RetailerRole, Cons
   (
     uint    itemSKU,
     uint    itemUPC,
+    uint    productID,
     string  memory productNotes,
     uint    productPrice,
     uint    itemState,
@@ -353,6 +353,7 @@ contract SupplyChain is Ownable, FarmerRole, DistributorRole, RetailerRole, Cons
     return (
         item.sku,
         item.upc,
+        item.productID,
         item.productNotes,
         item.productPrice,
         uint256(item.itemState),

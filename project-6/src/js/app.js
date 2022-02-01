@@ -58,11 +58,13 @@ App = {
     initWeb3: async function () {
         /// Find or Inject Web3 Provider
         /// Modern dapp browsers...
+
         if (window.ethereum) {
             App.web3Provider = window.ethereum;
             try {
                 // Request account access
-                await window.ethereum.enable();
+//                await window.ethereum.enable();
+                await window.ethereum.request({method: "eth_requestAccounts"});
             } catch (error) {
                 // User denied account access...
                 console.error("User denied account access")
@@ -77,12 +79,12 @@ App = {
             App.web3Provider = new Web3.providers.HttpProvider('http://localhost:7545');
         }
 
-        App.getMetaskAccountID();
+        App.getMetamaskAccountID();
 
         return App.initSupplyChain();
     },
 
-    getMetaskAccountID: function () {
+    getMetamaskAccountID: function () {
         web3 = new Web3(App.web3Provider);
 
         // Retrieving accounts
@@ -91,7 +93,7 @@ App = {
                 console.log('Error:',err);
                 return;
             }
-            console.log('getMetaskID:',res);
+            console.log('getMetamaskAccountID:',res);
             App.metamaskAccountID = res[0];
 
         })
@@ -100,13 +102,14 @@ App = {
     initSupplyChain: function () {
         /// Source the truffle compiled smart contracts
         var jsonSupplyChain='../../build/contracts/SupplyChain.json';
-        
+
         /// JSONfy the smart contracts
         $.getJSON(jsonSupplyChain, function(data) {
             console.log('data',data);
             var SupplyChainArtifact = data;
             App.contracts.SupplyChain = TruffleContract(SupplyChainArtifact);
             App.contracts.SupplyChain.setProvider(App.web3Provider);
+//            web3.eth.defaultAccount = web3.eth.accounts[0];
             
             App.fetchItemBufferOne();
             App.fetchItemBufferTwo();
@@ -124,7 +127,7 @@ App = {
     handleButtonClick: async function(event) {
         event.preventDefault();
 
-        App.getMetaskAccountID();
+        App.getMetamaskAccountID();
 
         var processId = parseInt($(event.target).data('id'));
         console.log('processId',processId);
@@ -167,7 +170,20 @@ App = {
         event.preventDefault();
         var processId = parseInt($(event.target).data('id'));
 
+//        App.contracts.SupplyChain.deployed().then(function(instance) {
+
+//            instance.isFarmer(
+//                App.metamaskAccountID,
+//                {from: App.metamaskAccountID}
+//            );
+//        }).then(function(result) {
+//            console.log('Account is Farmer',result);
+//        }).catch(function(err) {
+//            console.log(err.message);
+//        });
         App.contracts.SupplyChain.deployed().then(function(instance) {
+
+
             return instance.harvestItem(
                 App.upc, 
                 App.metamaskAccountID, 
@@ -175,7 +191,7 @@ App = {
                 App.originFarmInformation, 
                 App.originFarmLatitude, 
                 App.originFarmLongitude, 
-                App.productNotes
+                App.productNotes, {from: App.metamaskAccountID}
             );
         }).then(function(result) {
             $("#ftc-item").text(result);

@@ -159,7 +159,7 @@ contract('SupplyChain', function(accounts) {
             assert.equal(resultBufferOne[5], originFarmInformation, 'Error: Missing or Invalid originFarmInformation')
             assert.equal(resultBufferOne[6], originFarmLatitude, 'Error: Missing or Invalid originFarmLatitude')
             assert.equal(resultBufferOne[7], originFarmLongitude, 'Error: Missing or Invalid originFarmLongitude')
-            assert.equal(resultBufferTwo[4], 0, 'Error: Invalid item State')
+            assert.equal(resultBufferTwo[5], 0, 'Error: Invalid item State')
             assert.equal(eventEmitted, true, 'Invalid event emitted')
         }
     })    
@@ -181,7 +181,7 @@ contract('SupplyChain', function(accounts) {
             const resultBufferTwo = await supplyChain.fetchItemBufferTwo.call(upc)
 
             assert.equal(resultBufferOne[2], actor, 'Error: Farmer should be Owner')
-            assert.equal(resultBufferTwo[4], SupplyChain.State.Processed, 'Error: State should be PROCESSED')
+            assert.equal(resultBufferTwo[5], SupplyChain.State.Processed, 'Error: State should be PROCESSED')
             assert.equal(eventEmitted, true, 'Invalid event emitted')
         }
     })    
@@ -204,7 +204,7 @@ contract('SupplyChain', function(accounts) {
 
             // Verify the result set
             assert.equal(resultBufferOne[2], actor, 'Error: Farmer should be owner')
-            assert.equal(resultBufferTwo[4], SupplyChain.State.Packed, 'Error: State should be PACKED')
+            assert.equal(resultBufferTwo[5], SupplyChain.State.Packed, 'Error: State should be PACKED')
             assert.equal(eventEmitted, true, 'Invalid event emitted')
         }
     })    
@@ -225,8 +225,8 @@ contract('SupplyChain', function(accounts) {
             const resultBufferTwo = await supplyChain.fetchItemBufferTwo.call(upc);
 
             assert.equal(resultBufferOne[2], actor, 'Error: Owner should still be Farmer ownerID')
-            assert.equal(resultBufferTwo[3], productPrice, 'Error: Expected Price is Wrong')
-            assert.equal(resultBufferTwo[4], SupplyChain.State.ForSale, 'Error: State should be FOR SALE')
+            assert.equal(resultBufferTwo[4], productPrice, 'Error: Expected Price is Wrong')
+            assert.equal(resultBufferTwo[5], SupplyChain.State.ForSale, 'Error: State should be FOR SALE')
             assert.equal(eventEmitted, true, 'Invalid event emitted')
         }
     })    
@@ -258,7 +258,7 @@ contract('SupplyChain', function(accounts) {
             const resultBufferTwo = await supplyChain.fetchItemBufferTwo.call(upc)
 
             assert.equal(resultBufferOne[2], actor, 'Error: Distributor should be owner')
-            assert.equal(resultBufferTwo[4], SupplyChain.State.Sold, 'Error: State should be SOLD')
+            assert.equal(resultBufferTwo[5], SupplyChain.State.Sold, 'Error: State should be SOLD')
             assert.equal(eventItemSoldEmitted, true, 'Did not receive ItemSold Event')
             assert.equal(eventRefundSentEmitted, true, 'Did not receive RefundSent Event')
             assert.equal(eventPaymentSentEmitted, true, 'Did not receive PaymentSent Event')
@@ -281,7 +281,7 @@ contract('SupplyChain', function(accounts) {
             const resultBufferTwo = await supplyChain.fetchItemBufferTwo.call(upc)
 
             assert.equal(resultBufferOne[2], actor, 'Error: Distributor should still be owner')
-            assert.equal(resultBufferTwo[4], SupplyChain.State.Shipped, 'Error: State should be SHIPPED')
+            assert.equal(resultBufferTwo[5], SupplyChain.State.Shipped, 'Error: State should be SHIPPED')
             assert.equal(eventEmitted, true, 'ItemShipped event emitted')
         }
     })
@@ -303,7 +303,7 @@ contract('SupplyChain', function(accounts) {
             const resultBufferTwo = await supplyChain.fetchItemBufferTwo.call(upc)
 
             assert.equal(resultBufferOne[2], actor, 'Error: Distributor should still be owner')
-            assert.equal(resultBufferTwo[4], SupplyChain.State.Received, 'Error: State should be RECEIVED')
+            assert.equal(resultBufferTwo[5], SupplyChain.State.Received, 'Error: State should be RECEIVED')
             assert.equal(eventEmitted, true, 'ItemReceived event not emitted')
             }
      })
@@ -327,7 +327,7 @@ contract('SupplyChain', function(accounts) {
         const resultBufferTwo = await supplyChain.fetchItemBufferTwo.call(upc)
 
         assert.equal(resultBufferOne[2], actor, 'Error: Consumer should still be owner')
-        assert.equal(resultBufferTwo[4], SupplyChain.State.Purchased, 'Error: State should be PURCHASED')
+        assert.equal(resultBufferTwo[5], SupplyChain.State.Purchased, 'Error: State should be PURCHASED')
         assert.equal(eventEmitted, true, 'ItemPurchased event not emitted')
     }
         
@@ -345,22 +345,22 @@ contract('SupplyChain', function(accounts) {
             assert.equal(resultBufferOne[5], originFarmInformation, 'Error: originFarmInformation')
             assert.equal(resultBufferOne[6], originFarmLatitude, 'Error: originFarmLatitude')
             assert.equal(resultBufferOne[7], originFarmLongitude, 'Error: originFarmLongitude')
-            assert.equal(resultBufferOne[8], productID, 'Error: productID')
         }
     })
 
     it("TEST fetchItemBufferTwo()", async() => {
         {
             const supplyChain = await SupplyChain.deployed()
-            const resultBufferOne = await supplyChain.fetchItemBufferTwo.call(upc)
-            assert.equal(resultBufferOne[0], sku, 'Error: sku')
-            assert.equal(resultBufferOne[1], upc, 'Error: upc')
-            assert.equal(resultBufferOne[2], productNotes, 'Error: productNotes')
-            assert.equal(resultBufferOne[3], productPrice, 'Error: productPrice')
-            assert.equal(resultBufferOne[4], SupplyChain.State.Purchased, 'Error: State should be Purchased')
-            assert.equal(resultBufferOne[5], distributorID, 'Error: distributorID')
-            assert.equal(resultBufferOne[6], retailerID, 'Error: retailerID')
-            assert.equal(resultBufferOne[7], consumerID, 'Error: consumerID')
+            const resultBufferTwo = await supplyChain.fetchItemBufferTwo.call(upc)
+            assert.equal(resultBufferTwo[0], sku, 'Error: sku')
+            assert.equal(resultBufferTwo[1], upc, 'Error: upc')
+            assert.equal(resultBufferTwo[2], productID, 'Error: productID')
+            assert.equal(resultBufferTwo[3], productNotes, 'Error: productNotes')
+            assert.equal(resultBufferTwo[4], productPrice, 'Error: productPrice')
+            assert.equal(resultBufferTwo[5], SupplyChain.State.Purchased, 'Error: State should be Purchased')
+            assert.equal(resultBufferTwo[6], distributorID, 'Error: distributorID')
+            assert.equal(resultBufferTwo[7], retailerID, 'Error: retailerID')
+            assert.equal(resultBufferTwo[8], consumerID, 'Error: consumerID')
         }
 
 
