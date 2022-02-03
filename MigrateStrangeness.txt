@@ -1,0 +1,70 @@
+$ truffle migrate --reset rinkeby
+
+Compiling your contracts...
+===========================
+✔ Fetching solc version list from solc-bin. Attempt #1
+✔ Fetching solc version list from solc-bin. Attempt #1
+> Everything is up to date, there is nothing to compile.
+
+
+
+Starting migrations...
+======================
+> Network name:    'development'
+> Network id:      5777
+> Block gas limit: 6721975 (0x6691b7)
+
+
+1_initial_migration.js
+======================
+
+   Replacing 'Migrations'
+   ----------------------
+   > transaction hash:    0x1f5a7b7fcd42209a83894ca527a25313c67ddec2e723777e80e683ea8f74a969
+   > Blocks: 0            Seconds: 0
+   > contract address:    0x2A76f1C82b3EDD4b33a9259FdEE38dFdD1fcb3B4
+   > block number:        13
+   > block timestamp:     1643734679
+   > account:             0x27D8D15CbC94527cAdf5eC14B69519aE23288B95
+   > balance:             99.91957022
+   > gas used:            273220 (0x42b44)
+   > gas price:           20 gwei
+   > value sent:          0 ETH
+   > total cost:          0.0054644 ETH
+
+
+   > Saving migration to chain.
+   > Saving artifacts
+   -------------------------------------
+   > Total cost:           0.0054644 ETH
+
+
+2_deploy_contracts.js
+=====================
+
+   Replacing 'SupplyChain'
+   -----------------------
+   > transaction hash:    0xb80c4d432d4a9756e7bf3328d5f6b3abbe0deeee1a268056eba0c7a282a4c2b6
+   > Blocks: 0            Seconds: 0
+   > contract address:    0xC11814653157e6E8f2B2dcEDE099e517a24740E2
+   > block number:        15
+   > block timestamp:     1643734680
+   > account:             0x27D8D15CbC94527cAdf5eC14B69519aE23288B95
+   > balance:             99.86199506
+   > gas used:            2836220 (0x2b46fc)
+   > gas price:           20 gwei
+   > value sent:          0 ETH
+   > total cost:          0.0567244 ETH
+
+
+   > Saving migration to chain.
+   > Saving artifacts
+   -------------------------------------
+   > Total cost:           0.0567244 ETH
+
+
+Summary
+=======
+> Total deployments:   2
+> Final cost:          0.0621888 ETH
+

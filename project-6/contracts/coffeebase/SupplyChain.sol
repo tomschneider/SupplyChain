@@ -281,7 +281,7 @@ contract SupplyChain is Ownable, FarmerRole, DistributorRole, RetailerRole, Cons
     // Call modifier to check if upc has passed previous supply chain stage
     stateIsSold(_upc)
     // Call modifier to verify caller of this function
-    onlyFarmer()
+    onlyDistributor()
     {
     // Update the appropriate fields
     itemsByUPC[_upc].itemState = State.Shipped;

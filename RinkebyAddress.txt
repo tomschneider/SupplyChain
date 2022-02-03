@@ -1,0 +1,4 @@
+Tom W's SupplyChain Smart Contract on the Rinkeby network can be found here:
+
+contract address:    0x6b8Aca345059Ac8E2FD96eD433948979a325b715
+transaction hash:    0x739fe14b98efdaede44e7bebf07c5560e30cc73abeed89acaaffb9e6515ab407
