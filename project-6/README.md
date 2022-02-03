@@ -9,19 +9,21 @@ integration. A good challenge.
 
 Some notes about the project:
 
-1) Migrations.js in its original state contains deployment steps for all contracts, not just SupplyChain. This strange, as only SupplyChain need be deployed - or I don’t understand contract inheritance. I removed all deploy directives except for SupplyChain
-2) My implementation and Sequence Diagram shows Distributor taking ownership at the time of Buy. Shipping, therefore, is not executed by Farmer. This is in contrast to requirements documentation somewhere, I can't find at the moment.
-3) While there is a requirement to inherit from Ownable, it's functionality is not used in this project - or, at least, I could not find the requirement. Ownable is used for transfer of Contract ownership (not Item) and I found nothing in the Rubric regarding Contract ownership transfer.
+1) Migrations.js in its original state contains deployment steps for all contracts, not just SupplyChain. This is strange, as only SupplyChain need be deployed - or I don’t understand contract inheritance. I removed all deploy directives except for SupplyChain
+2) My implementation and Sequence Diagram shows Distributor taking ownership at the time of Buy. Shipping, therefore, is not executed by Farmer as can be found in some areas of the Udacity project documentation (can't find right now, may look if you want me to). Therefore, it might be the case that my implementation and state/ownership transitions may not match exactly expected behavior.
+3) There is a requirement to inherit from Ownable which I've done. However, the Ownable purpose is not used in this project - or, at least, I could not find the requirement. The purpose of Ownable is to support transfer of Contract ownership (not Item) and I found nothing in the Rubric regarding Contract ownership transfer.
 4) I added a number of different tests and renamed most
-5) I'm surprised by the strange/poor approach of using UPC and SKU as a pseudo primary key and the way values are hard coded into the Web App. This made it extremely difficult to add subsequent products for testing. My bad for not fixing this for real.
-6) With Ganache, I got into a habit of quickly pressing Item State transition buttons. At first, with Rinkeby I didn't realize I needed to wait for the transactions to complete before I could transition the Item to the next State.
+5) I'm surprised by the strange approach of creating psuedo primary keys using UPC and the hard-coded  values littering the Web App. It's a mess. I decided to toy with this too much, as I am not a HTML/Javascript guy. But, the fragile nature of the Web App made it next to impossible to add subsequent products for testing. My bad for not fixing this poor Web App approach.
+6) With Ganache, I got into a habit of quickly pressing Item State transition buttons. At first with Rinkeby, I didn't realize I needed to wait for the transactions to complete before I could transition the Item to the next State and caused some unforced errors.
 7) I added two additional Events as can be seen in the following screenshot which allow me to monitor payments and refunds: TomW_ADDED_RefundSent(address purchaser) and TomW_ADDED_PaymentSent(address seller);
-8) Mystery to me in Etherscan on Rinkeby: why Harvest Item does not show up as the Method invoked on the contract. Other methods, do so I will need to investigate.
+8) Some good samaritan or crypto thief emptied my Metamash account and made extended testing on Rinkeby difficult. I imagine the samaritan/thief found my truffle-config.js file and grabbed the Metamask secret phrase. Shame on me. In the screenshot below, you can see my account (0x6e911...) sending all my Rinkeby ether (ETH .27285) to 0xe1c5b...). As you can see, the owner of 0xe1c5b drained other accounts, too, and has done the same to over 450 accounts recently. Not your keys, not your coins. So, what do you think: Samaritan (teach me a lesson) or Crypto Thief (hoping my HD Wallet contained accounts for the Mainnet)?
+![](images/GoodSamaritanOrCryptoThief.png)
+9) Mystery to me in Etherscan on Rinkeby: why Harvest Item does not show up as the Method invoked on the contract. Other methods, do so I will need to investigate.
 Screenshot of Method Name mystery:
 
    ![](images/EtherscanMethodNames.png)
 
-This is a screenshot of the contract running successfully locally. Note the two extra Events:  
+Here is a screenshot of the contract running successfully locally. Note the two extra Events prepended by TomW_ADDED_:  
 
 ![](images/SupplyChain_ProductPurchased_TomW.png)
 

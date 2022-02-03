@@ -23,8 +23,7 @@
  */
 const HDWalletProvider = require('@truffle/hdwallet-provider');
 
-//const ganesh_wallet_mnemonic = 'spirit supply whale amount human item harsh scare congress discover talent hamster';
-const ganesh_wallet_mnemonic = 'uncover wolf mechanic bar discover industry twin blood bicycle scrub pyramid tobacco';
+const ganesh_wallet_mnemonic = '';
 const infura_rinkeby_project_name = 'https://rinkeby.infura.io/v3/3c4c047f3da8431daefd9fd67c849561';
 
 // const HDWallet = require('truffle-hdwallet-provider');

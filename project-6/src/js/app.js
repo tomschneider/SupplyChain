@@ -243,7 +243,7 @@ App = {
         // Please pass numbers as strings or BN objects to avoid precision errors.
         // https://ethereum.stackexchange.com/questions/65477/react-please-pass-numbers-as-strings-or-bignumber-objects-to-avoid-precision-er
         App.contracts.SupplyChain.deployed().then(function(instance) {
-            let productPrice = web3.utils.toWei('1000', "wei");
+            let productPrice = web3.utils.toWei('1', "ether");
             console.log('productPrice', productPrice);
             console.log("At Price          = " + productPrice)
 
@@ -265,7 +265,7 @@ App = {
         var processId = parseInt($(event.target).data('id'));
         console.log("Buying UPC       = " + App.upc.valueOf())
         App.contracts.SupplyChain.deployed().then(function(instance) {
-            const walletValue = web3.utils.toWei('1000', "wei");
+            const walletValue = web3.utils.toWei('1', "ether");
             return instance.buyItem(
                 App.upc.valueOf(),
                 {from: App.metamaskAccountID, value: walletValue});
