@@ -88,6 +88,12 @@ contract SupplyChain is Ownable, FarmerRole, DistributorRole, RetailerRole, Cons
     emit TomW_ADDED_RefundSent(consumer);
   }
 
+  // Define a modifer that verifies the Caller
+  modifier verifyCallerIsItemOwner (address _address) {
+    require(msg.sender == _address);
+    _;
+  }
+
   // Define a modifier that checks if an item.state of a upc is Harvested
   modifier stateIsHarvested(uint _upc) {
     require(itemsByUPC[_upc].itemState == State.Harvested);
@@ -173,6 +179,7 @@ contract SupplyChain is Ownable, FarmerRole, DistributorRole, RetailerRole, Cons
                         string memory _productNotes,
                         uint _productID
                         ) public
+  onlyFarmer()
   {
     // Add the new item as part of Harvest
     itemsByUPC[_upc].upc = _upc;
@@ -206,6 +213,8 @@ contract SupplyChain is Ownable, FarmerRole, DistributorRole, RetailerRole, Cons
     stateIsHarvested(_upc)
     // Call modifier to verify caller of this function
     onlyFarmer()
+
+    verifyCaller(itemsByUPC[_upc].ownerID)
   {
     // Update the appropriate fields
     itemsByUPC[_upc].itemState = State.Processed;
@@ -222,6 +231,7 @@ contract SupplyChain is Ownable, FarmerRole, DistributorRole, RetailerRole, Cons
   stateIsProcessed(_upc)
   // Call modifier to verify caller of this function
   onlyFarmer()
+  verifyCaller(itemsByUPC[_upc].ownerID)
   {
     // Update the appropriate fields
     itemsByUPC[_upc].itemState = State.Packed;
@@ -235,6 +245,7 @@ contract SupplyChain is Ownable, FarmerRole, DistributorRole, RetailerRole, Cons
   stateIsPacked(_upc)
   // Call modifier to verify caller of this function
   onlyFarmer()
+  verifyCaller(itemsByUPC[_upc].ownerID)
   {
     // Update the appropriate fields
     itemsByUPC[_upc].itemState = State.ForSale;
@@ -256,6 +267,7 @@ contract SupplyChain is Ownable, FarmerRole, DistributorRole, RetailerRole, Cons
     ensurePurchaserPaidEnough(_upc)
     // Call modifer to send any excess ether back to buyer
     checkForRefund(_upc)
+    onlyDistributor()
     {
       // Update the appropriate fields - ownerID, distributorID, itemState
      address farmersAddress = itemsByUPC[_upc].ownerID;
@@ -281,7 +293,9 @@ contract SupplyChain is Ownable, FarmerRole, DistributorRole, RetailerRole, Cons
     // Call modifier to check if upc has passed previous supply chain stage
     stateIsSold(_upc)
     // Call modifier to verify caller of this function
+    verifyCaller(itemsByUPC[_upc].ownerID)
     onlyDistributor()
+
     {
     // Update the appropriate fields
     itemsByUPC[_upc].itemState = State.Shipped;
@@ -303,7 +317,6 @@ contract SupplyChain is Ownable, FarmerRole, DistributorRole, RetailerRole, Cons
       itemsByUPC[_upc].itemState = State.Received;
     // Emit the appropriate event
       emit ItemReceived(_upc);
-    
   }
 
   // Define a function 'purchaseItem' that allows the consumer to mark an item 'Purchased'
