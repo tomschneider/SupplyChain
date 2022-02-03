@@ -67,8 +67,8 @@ Write Up
 **Modify client code to interact with a smart contract**
 
 | CRITERIA | MEETS SPECIFICATIONS |
-| :----- | :----- |
-| Client code interacts with smart contract. | DONE: Front-end is configured to: 	•	Submit a product for shipment (farmer to the distributor, distributor to retailer, etc). 	•	Receive product from shipment. 	•	Validate the authenticity of the product.  |
+| :-----| :----- |
+| Client code interacts with smart contract. | DONE:  All Stages tested Locally and captured in screenshot.  Front-end is configured to: 	•	Submit a product for shipment (farmer to the distributor, distributor to retailer, etc). 	•	Receive product from shipment. 	•	Validate the authenticity of the product.
 
 ### Supply Chain UML Diagrams
 ###Activity
@@ -164,6 +164,9 @@ TruffleContract is a Javascript and Node.js library which provides a programmati
 `Lite-Server Version 2.4.0`
 
 Lite-Server was the locally running web server hosting the front-end of the SupplyChain DApp.
+
+`Node.js v16.13.0`
+Node.js is an execution environment for Javascript applications.
 
 `Infura`
 
