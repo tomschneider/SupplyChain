@@ -214,7 +214,7 @@ contract SupplyChain is Ownable, FarmerRole, DistributorRole, RetailerRole, Cons
     // Call modifier to verify caller of this function
     onlyFarmer()
 
-    verifyCaller(itemsByUPC[_upc].ownerID)
+    verifyCallerIsItemOwner(itemsByUPC[_upc].ownerID)
   {
     // Update the appropriate fields
     itemsByUPC[_upc].itemState = State.Processed;
@@ -231,7 +231,7 @@ contract SupplyChain is Ownable, FarmerRole, DistributorRole, RetailerRole, Cons
   stateIsProcessed(_upc)
   // Call modifier to verify caller of this function
   onlyFarmer()
-  verifyCaller(itemsByUPC[_upc].ownerID)
+  verifyCallerIsItemOwner(itemsByUPC[_upc].ownerID)
   {
     // Update the appropriate fields
     itemsByUPC[_upc].itemState = State.Packed;
@@ -245,7 +245,7 @@ contract SupplyChain is Ownable, FarmerRole, DistributorRole, RetailerRole, Cons
   stateIsPacked(_upc)
   // Call modifier to verify caller of this function
   onlyFarmer()
-  verifyCaller(itemsByUPC[_upc].ownerID)
+  verifyCallerIsItemOwner(itemsByUPC[_upc].ownerID)
   {
     // Update the appropriate fields
     itemsByUPC[_upc].itemState = State.ForSale;
@@ -293,7 +293,7 @@ contract SupplyChain is Ownable, FarmerRole, DistributorRole, RetailerRole, Cons
     // Call modifier to check if upc has passed previous supply chain stage
     stateIsSold(_upc)
     // Call modifier to verify caller of this function
-    verifyCaller(itemsByUPC[_upc].ownerID)
+    verifyCallerIsItemOwner(itemsByUPC[_upc].ownerID)
     onlyDistributor()
 
     {
